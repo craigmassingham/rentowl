@@ -1,4 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import { loadEnvConfig } from "@next/env";
+
+// Playwright doesn't read .env.local on its own — reuse Next's loader so the
+// specs see the same Supabase env as the app.
+loadEnvConfig(process.cwd());
 
 export default defineConfig({
   testDir: "./e2e",
