@@ -21,15 +21,18 @@ Next.js 15 (App Router) + TypeScript strict · Tailwind + shadcn/ui · Supabase 
 
 ## Setup
 
-Prerequisites: Node 22+, pnpm (via `corepack enable`).
+Prerequisites: Node 22+, pnpm (via `corepack enable`), Docker Desktop, [Supabase CLI](https://supabase.com/docs/guides/local-development) (`brew install supabase/tap/supabase`).
 
 ```bash
 git clone https://github.com/craigmassingham/rentowl.git
 cd rentowl
 pnpm install
-cp .env.example apps/web/.env.local   # fill in Supabase values
+supabase start                        # local Postgres/Auth/Storage (Docker)
+cp .env.example apps/web/.env.local   # use the URL + anon key `supabase start` prints
 pnpm dev                              # http://localhost:3000
 ```
+
+Seeded dev logins (local only): `alicia.landlord@rentowl.test` and `ben.landlord@rentowl.test`, password `rentowl-dev-password`.
 
 ## Commands
 
@@ -39,6 +42,10 @@ pnpm build       # production build
 pnpm lint        # eslint across the workspace
 pnpm typecheck   # tsc --noEmit across the workspace
 pnpm test        # vitest across the workspace
+
+supabase db reset                     # reapply migrations + seed from scratch
+pnpm --filter @rentowl/db gen:types   # regenerate DB types after a migration
+pnpm --filter @rentowl/db test:rls    # RLS integration tests (needs supabase start)
 ```
 
 ## Repo layout

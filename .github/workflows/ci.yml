@@ -28,3 +28,34 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  rls:
+    name: Schema + RLS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # Applies migrations + seed on a fresh stack
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: RLS integration tests
+        run: pnpm --filter @rentowl/db test:rls
+
+      - name: Generated types are current
+        run: |
+          pnpm --filter @rentowl/db gen:types
+          git diff --exit-code packages/db/src/database.types.ts

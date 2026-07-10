@@ -191,6 +191,9 @@ Everywhere. UI, database, code, docs.
 - Foreign keys always declared.
 - Indexes on all foreign key columns and any column used in WHERE clauses.
 - No cascading deletes on user data — soft-flag and confirm.
+- Every migration that creates a table must add explicit grants (`authenticated` DML, `service_role` all; never `anon`) — the CLI's default privileges include none (ADR-004).
+- RLS cross-table ownership checks use the `private.*` security-definer helpers (`is_property_owner`, `is_tenancy_owner`, `is_tenancy_party`), not inline subqueries.
+- After any migration: `supabase db reset`, then `pnpm --filter @rentowl/db gen:types` (CI fails if generated types are stale).
 
 ### AI prompts
 
