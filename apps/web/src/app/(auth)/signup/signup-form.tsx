@@ -22,6 +22,7 @@ import {
   Input,
 } from "@rentowl/ui";
 import { createClient } from "@/lib/supabase/client";
+import { authErrorMessage } from "@/lib/auth-errors";
 
 const SignupSchema = z.object({
   fullName: z.string().min(2, "Enter your full name."),
@@ -55,7 +56,10 @@ export function SignupForm() {
 
     if (error) {
       setServerError(
-        "We couldn't create your account. Check your details and try again."
+        authErrorMessage(
+          error,
+          "We couldn't create your account. Check your details and try again."
+        )
       );
       return;
     }
