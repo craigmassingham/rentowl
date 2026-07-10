@@ -1,1 +1,35 @@
+# local claude settings
 .claude/settings.local.json
+
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# builds
+dist/
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env.*.local
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# supabase local
+supabase/.temp/
+supabase/.branches/
+
+# misc
+.DS_Store
+*.pem
+.vercel
+
+# large local artifacts (not source)
+RentOwl Plan.pdf
