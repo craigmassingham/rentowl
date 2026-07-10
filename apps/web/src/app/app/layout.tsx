@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "@rentowl/ui";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +19,23 @@ export default async function AppLayout({
   return (
     <div className="min-h-screen">
       <header className="flex items-center justify-between border-b px-6 py-3">
-        <span className="font-semibold">RentOwl</span>
+        <div className="flex items-center gap-6">
+          <span className="font-semibold">RentOwl</span>
+          <nav className="flex gap-4 text-sm">
+            <Link
+              href="/app/dashboard"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/app/properties"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Properties
+            </Link>
+          </nav>
+        </div>
         <form action="/logout" method="post">
           <Button variant="ghost" size="sm" type="submit">
             Log out
