@@ -26,6 +26,7 @@ import {
   TabsTrigger,
 } from "@rentowl/ui";
 import { createClient } from "@/lib/supabase/client";
+import { authErrorMessage } from "@/lib/auth-errors";
 
 const PasswordSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -64,7 +65,9 @@ export function LoginForm() {
     });
 
     if (error) {
-      setServerError("Email or password is incorrect. Try again.");
+      setServerError(
+        authErrorMessage(error, "Email or password is incorrect. Try again.")
+      );
       return;
     }
 
@@ -84,7 +87,12 @@ export function LoginForm() {
     });
 
     if (error) {
-      setServerError("We couldn't send the link. Check the email and try again.");
+      setServerError(
+        authErrorMessage(
+          error,
+          "We couldn't send the link. Check the email and try again."
+        )
+      );
       return;
     }
 
