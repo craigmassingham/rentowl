@@ -20,3 +20,13 @@ export function formatDate(date: Date | string): string {
 export function isValidSGPostalCode(postal: string): boolean {
   return /^\d{6}$/.test(postal);
 }
+
+/**
+ * Formats a Date as an ISO yyyy-mm-dd string using local date parts —
+ * unlike toISOString(), never shifts the day across the UTC boundary.
+ */
+export function toISODate(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+}
