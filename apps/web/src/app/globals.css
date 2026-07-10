@@ -1,26 +1,97 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* Scan the shared UI package so its Tailwind classes are generated. */
+@source "../../../../packages/ui/src";
+
+/*
+ * RentOwl design tokens — light mode only in v1 (see sprint-plans/M1-foundation.md, M1-W1-03).
+ * Palette: navy primary (owl-ish, not corporate blue), warm sand accent (SG-appropriate),
+ * zinc neutrals. Feature code must use these tokens, never hardcoded colours.
+ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.5rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.279 0.041 260.031); /* navy #1E293B */
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.279 0.041 260.031);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.279 0.041 260.031);
+
+  /* Primary — neutral navy (#1E293B family) */
+  --primary: oklch(0.279 0.041 260.031);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Secondary — zinc */
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.279 0.041 260.031);
+
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+
+  /* Accent — warm sand (#D4A574 family) */
+  --accent: oklch(0.755 0.075 70.697);
+  --accent-foreground: oklch(0.279 0.041 260.031);
+
+  /* Danger — #DC2626 */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  /* Success — #059669 */
+  --success: oklch(0.596 0.145 163.225);
+  --success-foreground: oklch(0.985 0 0);
+
+  /* Warning — #D97706 */
+  --warning: oklch(0.666 0.157 58.318);
+  --warning-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.755 0.075 70.697);
 }
 
 @theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }

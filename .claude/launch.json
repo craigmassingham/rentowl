@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.local/node/bin:$PATH\" && pnpm --dir apps/web dev"
+      ],
+      "port": 3000
+    }
+  ]
+}
