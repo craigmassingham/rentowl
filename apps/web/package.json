@@ -8,12 +8,15 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
+    "@rentowl/db": "workspace:*",
     "@rentowl/shared": "workspace:*",
     "@rentowl/ui": "workspace:*",
+    "@supabase/supabase-js": "^2.110.1",
     "next": "15.5.20",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -22,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
