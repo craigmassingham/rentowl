@@ -1,0 +1,24 @@
+{
+  "name": "@rentowl/prompts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tenancy-agreements/generate": "./tenancy-agreements/generate.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "eval": "vitest run"
+  },
+  "dependencies": {
+    "@rentowl/integrations": "workspace:*",
+    "@rentowl/shared": "workspace:*",
+    "@supabase/supabase-js": "^2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}
