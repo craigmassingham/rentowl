@@ -10,6 +10,7 @@ import {
 } from "@rentowl/integrations/anthropic";
 import { PROPERTY_TYPES, formatDate, formatSGD } from "@rentowl/shared";
 import {
+  CLAUSE_VARIABLE_DEFAULTS,
   getClauseLibrary,
   substituteVariables,
   type Clause,
@@ -105,6 +106,10 @@ function monthsBetween(startIso: string, endIso: string): number {
 function computeVariables(input: GenerateTAInput): Record<string, string> {
   const { tenancy, property, clause_options } = input;
   return {
+    // Library defaults (diplomatic periods, minor repair threshold) go to the
+    // model as ready-made values so it copies them verbatim instead of
+    // inventing its own formatting; input-specific values below override.
+    ...CLAUSE_VARIABLE_DEFAULTS,
     agreement_date: formatDate(tenancy.agreement_date),
     landlord_name: tenancy.landlord_name,
     tenant_name: tenancy.tenant_names.join(" and "),

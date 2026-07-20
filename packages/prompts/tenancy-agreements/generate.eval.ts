@@ -264,12 +264,25 @@ function randomInput(seed: number): GenerateTAInput {
 }
 
 describe.skipIf(!hasKey || robustnessRuns === 0)("robustness — random inputs", () => {
-  it(`output validates across ${robustnessRuns} random inputs`, async () => {
-    for (let i = 0; i < robustnessRuns; i++) {
-      // generateTenancyAgreement throws on any schema/selection/variable
-      // failure, so completing the loop is the assertion.
-      const result = await generateTenancyAgreement(randomInput(i));
-      expect(result.clauses.length).toBeGreaterThanOrEqual(10);
+  it(
+    `output validates across ${robustnessRuns} random inputs`,
+    { timeout: 900_000 },
+    async () => {
+      // Batches of 5 keep wall-clock reasonable (~10s per Opus call serially).
+      for (let batch = 0; batch < robustnessRuns; batch += 5) {
+        const seeds = Array.from(
+          { length: Math.min(5, robustnessRuns - batch) },
+          (_, i) => batch + i
+        );
+        const results = await Promise.all(
+          // generateTenancyAgreement throws on any schema/selection/variable
+          // failure, so completing every batch is the assertion.
+          seeds.map((seed) => generateTenancyAgreement(randomInput(seed)))
+        );
+        for (const result of results) {
+          expect(result.clauses.length).toBeGreaterThanOrEqual(10);
+        }
+      }
     }
-  });
+  );
 });
