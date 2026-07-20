@@ -72,6 +72,48 @@ export type Database = {
           },
         ]
       }
+      prompt_calls: {
+        Row: {
+          cost_usd: number | null
+          created_at: string
+          duration_ms: number | null
+          error: string | null
+          id: string
+          input_hash: string
+          model: string
+          output: Json | null
+          prompt_key: string
+          prompt_version: string
+          usage: Json | null
+        }
+        Insert: {
+          cost_usd?: number | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          input_hash: string
+          model: string
+          output?: Json | null
+          prompt_key: string
+          prompt_version: string
+          usage?: Json | null
+        }
+        Update: {
+          cost_usd?: number | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          input_hash?: string
+          model?: string
+          output?: Json | null
+          prompt_key?: string
+          prompt_version?: string
+          usage?: Json | null
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           address_line_1: string

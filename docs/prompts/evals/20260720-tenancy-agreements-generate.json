@@ -1,0 +1,116 @@
+{
+  "prompt_key": "tenancy-agreements/generate",
+  "prompt_version": "1.0.0",
+  "run_at": "2026-07-20T07:53:50.134Z",
+  "cases": [
+    {
+      "name": "hdb-1yr-no-diplomatic",
+      "passed": true,
+      "cost_sgd": 0.0594405,
+      "usage": {
+        "input_tokens": 5796,
+        "output_tokens": 602,
+        "cost_usd": 0.04403
+      },
+      "flags": []
+    },
+    {
+      "name": "condo-2yr-diplomatic",
+      "passed": true,
+      "cost_sgd": 0.06934275000000001,
+      "usage": {
+        "input_tokens": 5783,
+        "output_tokens": 898,
+        "cost_usd": 0.051365
+      },
+      "flags": [
+        {
+          "clause_id": "deposit",
+          "issue": "The deposit of S$9,000 equals two months' rent, above the one-month norm; the 24-month term is also longer than the typical 12-month tenancy.",
+          "suggestion": "Confirm with the landlord that a two-month deposit and a 24-month fixed term are intended before sending."
+        },
+        {
+          "clause_id": "diplomatic",
+          "issue": "The diplomatic clause allows early termination only after twelve (12) months, but the fixed term is 24 months, leaving a long non-terminable initial period relative to a standard tenancy.",
+          "suggestion": "Confirm the twelve-month minimum stay and two-month notice suit both parties given the two-year term."
+        }
+      ]
+    },
+    {
+      "name": "condo-expat-custom-threshold",
+      "passed": true,
+      "cost_sgd": 0.06912675,
+      "usage": {
+        "input_tokens": 5806,
+        "output_tokens": 887,
+        "cost_usd": 0.051205
+      },
+      "flags": [
+        {
+          "clause_id": "deposit",
+          "issue": "The deposit of S$10,400 equals two months' rent, above the one-month norm for a 12-month term.",
+          "suggestion": "Confirm with the landlord that a two-month deposit is intended before sending."
+        },
+        {
+          "clause_id": "diplomatic",
+          "issue": "The diplomatic clause allows early termination only after twelve (12) months, but the Term is exactly 12 months, leaving effectively no window to invoke it.",
+          "suggestion": "Confirm the minimum-stay period with the landlord; a 12-month minimum on a 12-month lease renders the diplomatic clause largely inoperative."
+        }
+      ]
+    },
+    {
+      "name": "landed-3yr-joint-tenants",
+      "passed": true,
+      "cost_sgd": 0.06602175,
+      "usage": {
+        "input_tokens": 5791,
+        "output_tokens": 798,
+        "cost_usd": 0.048905
+      },
+      "flags": [
+        {
+          "clause_id": "deposit",
+          "issue": "The deposit of S$17,000 equals two months' rent. For a 36-month term a two-month deposit is common, but confirm this matches what was agreed.",
+          "suggestion": "Confirm the two-month deposit amount with the landlord before sending."
+        },
+        {
+          "clause_id": "term",
+          "issue": "The fixed term is 36 months (three years), which is longer than the typical one- to two-year residential tenancy and there is no diplomatic or break clause included.",
+          "suggestion": "Confirm the parties intend a three-year fixed term and consider whether an early-termination provision should be added."
+        }
+      ]
+    },
+    {
+      "name": "hdb-room-rental",
+      "passed": true,
+      "cost_sgd": 0.07711875000000001,
+      "usage": {
+        "input_tokens": 5820,
+        "output_tokens": 1121,
+        "cost_usd": 0.057125
+      },
+      "flags": [
+        {
+          "clause_id": "use-of-premises",
+          "issue": "This is a room-only rental (master bedroom), but the clause bodies assume the whole HDB flat is let to the Tenant.",
+          "suggestion": "Add a special condition stating exactly which room is let (master bedroom) and which areas (e.g. kitchen, bathroom, living room) are shared, and note any occupancy limits for the flat as a whole."
+        },
+        {
+          "clause_id": "handover-inventory",
+          "issue": "The Inventory and handover clause assumes possession of the entire Premises, which does not fit a room rental where the landlord or others also occupy the flat.",
+          "suggestion": "Confirm the Inventory covers only the let room and shared items the Tenant may use, and clarify access arrangements to shared areas."
+        },
+        {
+          "clause_id": "utilities-and-charges",
+          "issue": "For a room rental, requiring the Tenant to register utility accounts in their own name and pay all utilities is usually impractical since utilities are shared with other occupants.",
+          "suggestion": "Confirm with the landlord how utilities are apportioned (e.g. included in rent or split by share) and add a special condition to reflect this."
+        },
+        {
+          "clause_id": null,
+          "issue": "Renting out a room in an HDB flat is subject to HDB subletting-of-room rules, including eligibility and maximum occupancy limits.",
+          "suggestion": "Confirm the landlord has met HDB's conditions for renting out a room (owner's minimum occupation period, registration of tenants, occupancy cap) before signing."
+        }
+      ]
+    }
+  ]
+}
