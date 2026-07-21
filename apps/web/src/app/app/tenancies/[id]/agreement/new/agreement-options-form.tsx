@@ -29,6 +29,7 @@ export function AgreementOptionsForm({
   action,
   diplomaticApplicable,
   cancelHref,
+  cancelLabel = "Cancel",
 }: {
   action: (
     prev: AgreementActionState,
@@ -36,6 +37,7 @@ export function AgreementOptionsForm({
   ) => Promise<AgreementActionState>;
   diplomaticApplicable: boolean;
   cancelHref: string;
+  cancelLabel?: string;
 }) {
   const [state, formAction] = React.useActionState<AgreementActionState, FormData>(
     action,
@@ -110,7 +112,7 @@ export function AgreementOptionsForm({
       <div className="flex items-center gap-3">
         <SubmitButton />
         <Button variant="outline" asChild>
-          <Link href={cancelHref}>Cancel</Link>
+          <Link href={cancelHref}>{cancelLabel}</Link>
         </Button>
         <PendingNote />
       </div>

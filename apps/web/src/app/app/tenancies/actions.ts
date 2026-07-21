@@ -46,11 +46,11 @@ function toRow(values: TenancyInput) {
   };
 }
 
-export async function createTenancy(
+/** Auth + validate + insert. Returns the new id, or field errors. No redirect. */
+async function insertTenancy(
   propertyId: string,
-  _prev: TenancyActionState,
   formData: FormData
-): Promise<TenancyActionState> {
+): Promise<{ id: string } | { errors: Record<string, string> }> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -79,8 +79,30 @@ export async function createTenancy(
     };
   }
 
+  return { id: data.id };
+}
+
+export async function createTenancy(
+  propertyId: string,
+  _prev: TenancyActionState,
+  formData: FormData
+): Promise<TenancyActionState> {
+  const result = await insertTenancy(propertyId, formData);
+  if ("errors" in result) return { errors: result.errors };
   revalidatePath(`/app/properties/${propertyId}`);
-  redirect(`/app/tenancies/${data.id}`);
+  redirect(`/app/tenancies/${result.id}`);
+}
+
+/** Onboarding variant: same insert, returns to the onboarding flow to advance. */
+export async function createTenancyForOnboarding(
+  propertyId: string,
+  _prev: TenancyActionState,
+  formData: FormData
+): Promise<TenancyActionState> {
+  const result = await insertTenancy(propertyId, formData);
+  if ("errors" in result) return { errors: result.errors };
+  revalidatePath(`/app/properties/${propertyId}`);
+  redirect("/app/onboarding");
 }
 
 export async function updateTenancy(
