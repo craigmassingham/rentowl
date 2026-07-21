@@ -1,4 +1,5 @@
 export { formatSGD, formatDate, isValidSGPostalCode, toISODate } from "./format";
+export { nextRentDueDate, daysUntil } from "./dates";
 export {
   PropertyInputSchema,
   PROPERTY_TYPES,
