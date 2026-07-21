@@ -27,10 +27,10 @@ function parseInput(formData: FormData): {
   return { values: result.data };
 }
 
-export async function createProperty(
-  _prev: PropertyActionState,
+/** Auth + validate + insert. Returns the new id, or field errors. No redirect. */
+async function insertProperty(
   formData: FormData
-): Promise<PropertyActionState> {
+): Promise<{ id: string } | { errors: Record<string, string> }> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -54,8 +54,28 @@ export async function createProperty(
     };
   }
 
+  return { id: data.id };
+}
+
+export async function createProperty(
+  _prev: PropertyActionState,
+  formData: FormData
+): Promise<PropertyActionState> {
+  const result = await insertProperty(formData);
+  if ("errors" in result) return { errors: result.errors };
   revalidatePath("/app/properties");
-  redirect(`/app/properties/${data.id}`);
+  redirect(`/app/properties/${result.id}`);
+}
+
+/** Onboarding variant: same insert, returns to the onboarding flow to advance. */
+export async function createPropertyForOnboarding(
+  _prev: PropertyActionState,
+  formData: FormData
+): Promise<PropertyActionState> {
+  const result = await insertProperty(formData);
+  if ("errors" in result) return { errors: result.errors };
+  revalidatePath("/app/properties");
+  redirect("/app/onboarding");
 }
 
 export async function updateProperty(

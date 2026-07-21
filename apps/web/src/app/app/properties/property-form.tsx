@@ -57,11 +57,13 @@ export function PropertyForm({
   defaults = EMPTY_DEFAULTS,
   submitLabel,
   cancelHref,
+  cancelLabel = "Cancel",
 }: {
   action: (prev: PropertyActionState, formData: FormData) => Promise<PropertyActionState>;
   defaults?: PropertyFormDefaults;
   submitLabel: string;
   cancelHref: string;
+  cancelLabel?: string;
 }) {
   const [formError, setFormError] = React.useState<string | null>(null);
 
@@ -232,7 +234,7 @@ export function PropertyForm({
             {form.formState.isSubmitting ? "Saving…" : submitLabel}
           </Button>
           <Button variant="outline" asChild>
-            <Link href={cancelHref}>Cancel</Link>
+            <Link href={cancelHref}>{cancelLabel}</Link>
           </Button>
         </div>
       </form>

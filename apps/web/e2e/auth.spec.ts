@@ -96,11 +96,13 @@ test("login → dashboard → session persists → logout", async ({ page }) => 
   await page.getByRole("button", { name: "Log in" }).click();
 
   await expect(page).toHaveURL(/\/app\/dashboard/);
-  await expect(page.getByText(`Hello, ${testName}`)).toBeVisible();
+  // New user has no properties → empty-state dashboard greets by first name.
+  await expect(page.getByText(`Welcome, ${testName.split(" ")[0]}`)).toBeVisible();
 
   // Session persists on reload.
   await page.reload();
-  await expect(page.getByText(`Hello, ${testName}`)).toBeVisible();
+  // New user has no properties → empty-state dashboard greets by first name.
+  await expect(page.getByText(`Welcome, ${testName.split(" ")[0]}`)).toBeVisible();
 
   // Logout returns to /login and the dashboard is locked again.
   await page.getByRole("button", { name: "Log out" }).click();

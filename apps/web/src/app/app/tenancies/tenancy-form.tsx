@@ -73,12 +73,14 @@ export function TenancyForm({
   defaults = EMPTY_DEFAULTS,
   submitLabel,
   cancelHref,
+  cancelLabel = "Cancel",
   showStatus = false,
 }: {
   action: (prev: TenancyActionState, formData: FormData) => Promise<TenancyActionState>;
   defaults?: TenancyFormDefaults;
   submitLabel: string;
   cancelHref: string;
+  cancelLabel?: string;
   /** Status is only editable on existing tenancies — new ones start active. */
   showStatus?: boolean;
 }) {
@@ -310,7 +312,7 @@ export function TenancyForm({
             {form.formState.isSubmitting ? "Saving…" : submitLabel}
           </Button>
           <Button variant="outline" asChild>
-            <Link href={cancelHref}>Cancel</Link>
+            <Link href={cancelHref}>{cancelLabel}</Link>
           </Button>
         </div>
       </form>
