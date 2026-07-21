@@ -36,6 +36,12 @@ export default async function TenancyDetailPage({
   const tenantParse = ProspectiveTenantSchema.safeParse(tenancy.prospective_tenant);
   const tenant = tenantParse.success ? tenantParse.data : null;
 
+  const { data: agreements } = await supabase
+    .from("tenancy_agreements")
+    .select("id, version, status, generated_at")
+    .eq("tenancy_id", id)
+    .order("version", { ascending: false });
+
   const facts: [string, string][] = [
     ["Status", TENANCY_STATUS_LABELS[tenancy.status]],
     ["Start date", formatDate(tenancy.start_date)],
@@ -95,6 +101,45 @@ export default async function TenancyDetailPage({
           </p>
         </div>
       ) : null}
+
+      <section className="mt-10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold tracking-tight">Agreement</h2>
+          <Button variant={agreements && agreements.length > 0 ? "outline" : "default"} asChild>
+            <Link href={`/app/tenancies/${tenancy.id}/agreement/new`}>
+              {agreements && agreements.length > 0
+                ? "Generate new version"
+                : "Generate agreement"}
+            </Link>
+          </Button>
+        </div>
+        {!agreements || agreements.length === 0 ? (
+          <p className="mt-3 text-sm text-muted-foreground">
+            No agreement generated yet. Generate one to produce a signable PDF.
+          </p>
+        ) : (
+          <ul className="mt-4 grid gap-3">
+            {agreements.map((agreement) => (
+              <li key={agreement.id}>
+                <Link
+                  href={`/app/tenancies/${tenancy.id}/agreement/${agreement.id}`}
+                  className="flex items-center justify-between gap-4 rounded-lg border p-4 transition-colors hover:bg-accent"
+                >
+                  <div>
+                    <p className="font-medium">Version {agreement.version}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Generated {formatDate(agreement.generated_at)}
+                    </p>
+                  </div>
+                  <span className="rounded-md border px-2 py-1 text-xs font-medium capitalize text-muted-foreground">
+                    {agreement.status}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

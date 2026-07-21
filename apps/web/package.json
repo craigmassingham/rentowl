@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
+    "@react-pdf/renderer": "^4.5.1",
     "@rentowl/db": "workspace:*",
+    "@rentowl/prompts": "workspace:*",
     "@rentowl/shared": "workspace:*",
     "@rentowl/ui": "workspace:*",
     "@supabase/supabase-js": "^2.110.1",
@@ -21,6 +23,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.81.0",
+    "server-only": "^0.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
