@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "@rentowl/ui";
 import { createClient } from "@/lib/supabase/server";
+import { FeedbackDialog } from "./feedback-dialog";
 
 export default async function AppLayout({
   children,
@@ -36,11 +37,14 @@ export default async function AppLayout({
             </Link>
           </nav>
         </div>
-        <form action="/logout" method="post">
-          <Button variant="ghost" size="sm" type="submit">
-            Log out
-          </Button>
-        </form>
+        <div className="flex items-center gap-1">
+          <FeedbackDialog />
+          <form action="/logout" method="post">
+            <Button variant="ghost" size="sm" type="submit">
+              Log out
+            </Button>
+          </form>
+        </div>
       </header>
       <div className="px-6 py-8">{children}</div>
     </div>
