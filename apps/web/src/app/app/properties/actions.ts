@@ -47,6 +47,7 @@ async function insertProperty(
     .single();
 
   if (error) {
+    console.error("[properties] insert failed", error);
     return {
       errors: {
         form: "We couldn't save this property. Check your connection and try again.",
@@ -100,6 +101,7 @@ export async function updateProperty(
     .select("id");
 
   if (error || data.length === 0) {
+    if (error) console.error("[properties] update failed", error);
     return {
       errors: {
         form: "We couldn't update this property. It may have been deleted — go back to Properties and try again.",
@@ -133,6 +135,7 @@ export async function deleteProperty(propertyId: string): Promise<{ error: strin
           "This property has tenancies attached, so it can't be deleted. End or remove its tenancies first.",
       };
     }
+    console.error("[properties] delete failed", error);
     return {
       error: "We couldn't delete this property. Check your connection and try again.",
     };

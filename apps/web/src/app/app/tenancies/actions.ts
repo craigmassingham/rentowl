@@ -72,6 +72,7 @@ async function insertTenancy(
     if (error.code === "23P01") {
       return { errors: { form: OVERLAP_ERROR } };
     }
+    console.error("[tenancies] insert failed", error);
     return {
       errors: {
         form: "We couldn't save this tenancy. Check your connection and try again.",
@@ -129,6 +130,7 @@ export async function updateTenancy(
     if (error.code === "23P01") {
       return { errors: { form: OVERLAP_ERROR } };
     }
+    console.error("[tenancies] update failed", error);
     return {
       errors: {
         form: "We couldn't update this tenancy. Check your connection and try again.",
