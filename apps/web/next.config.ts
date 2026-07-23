@@ -8,11 +8,23 @@ const nextConfig: NextConfig = {
     "@rentowl/prompts",
     "@rentowl/integrations",
   ],
-  // The clause loader (@rentowl/shared/clauses) reads docs/clauses/*.md from
-  // disk at runtime. Ship those files with the serverless bundle so TA
-  // generation works on Vercel (see docs/clauses/README.md).
+  // Two things are read from disk at runtime (invisible to Next's import
+  // tracer, so they must be listed explicitly): the clause library
+  // (@rentowl/shared/clauses) and the TA generation system prompt
+  // (@rentowl/prompts/tenancy-agreements/generate.system.md). Every route
+  // that imports generateTenancyAgreement — directly or via the agreement
+  // server action — needs both globs, or the route 500s on Vercel.
   outputFileTracingIncludes: {
-    "/app/tenancies/**": ["../../docs/clauses/**"],
+    "/app/tenancies/**": [
+      "../../docs/clauses/**",
+      "../../packages/prompts/tenancy-agreements/*.md",
+    ],
+    // Bare route, no trailing segment — "/app/onboarding/**" would require
+    // one and silently match nothing (verified via the .next trace manifest).
+    "/app/onboarding": [
+      "../../docs/clauses/**",
+      "../../packages/prompts/tenancy-agreements/*.md",
+    ],
   },
 };
 
