@@ -117,9 +117,10 @@ export async function generateAgreement(
         ...(threshold !== undefined ? { minor_repair_threshold_sgd: threshold } : {}),
       },
     });
-  } catch {
+  } catch (err) {
     // The generator throws on selection/variable mismatches (defence in depth)
     // and on API failure. Either way the landlord can retry.
+    console.error("[agreement] generateTenancyAgreement failed", err);
     return {
       error:
         "We couldn't generate the agreement. Try again — if it keeps failing, the AI service may be down.",
@@ -171,6 +172,7 @@ export async function generateAgreement(
       upsert: true,
     });
   if (uploadError) {
+    console.error("[agreement] PDF upload failed", uploadError);
     return {
       error: "We generated the agreement but couldn't save the PDF. Try again.",
     };
@@ -198,6 +200,7 @@ export async function generateAgreement(
     .single();
 
   if (insertError || !agreement) {
+    if (insertError) console.error("[agreement] tenancy_agreements insert failed", insertError);
     return {
       error: "We generated the agreement but couldn't record it. Try again.",
     };
