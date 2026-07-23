@@ -1,31 +1,27 @@
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { parseClauseFile } from "./parse";
 import type { Clause } from "./types";
 
 /**
- * Finds the repo root (marked by pnpm-workspace.yaml) so the loader works
- * from any workspace package, tests, and scripts alike.
+ * The clauses directory, resolved relative to this module's own location
+ * rather than process.cwd(). cwd-based tree-walking (the previous approach,
+ * searching upward for pnpm-workspace.yaml) is unreliable on serverless
+ * platforms: cwd is platform-defined and marker files outside the traced
+ * import graph aren't guaranteed to ship with the deployed bundle.
  *
  * Deployment note (W3-03): server code on Vercel must add
- * `outputFileTracingIncludes: { "/...": ["docs/clauses/**"] }` in next.config
- * so these files ship with the serverless bundle.
+ * `outputFileTracingIncludes` in next.config for every route that (directly
+ * or transitively) imports this module, covering both
+ * `packages/shared/src/clauses/../../../../docs/clauses/**` (this file) and
+ * `packages/prompts/tenancy-agreements/*.md` (generate.system.md) — a
+ * runtime readFileSync/readdirSync is invisible to Next's static tracer.
  */
-function findClausesDir(startDir: string): string {
-  let dir = startDir;
-  for (;;) {
-    if (existsSync(join(dir, "pnpm-workspace.yaml"))) {
-      return join(dir, "docs", "clauses");
-    }
-    const parent = dirname(dir);
-    if (parent === dir) {
-      throw new Error(
-        `Couldn't locate the repo root from ${startDir} — run from inside the repo, or pass { dir }.`
-      );
-    }
-    dir = parent;
-  }
-}
+const CLAUSES_DIR = join(
+  dirname(fileURLToPath(import.meta.url)),
+  "../../../../docs/clauses"
+);
 
 /**
  * Loads, validates, and sorts the clause library from /docs/clauses.
@@ -33,7 +29,7 @@ function findClausesDir(startDir: string): string {
  * load time, never at TA-generation time.
  */
 export function getClauseLibrary(options: { dir?: string } = {}): Clause[] {
-  const dir = options.dir ?? findClausesDir(process.cwd());
+  const dir = options.dir ?? CLAUSES_DIR;
 
   const files = readdirSync(dir)
     .filter((f) => f.endsWith(".md") && f !== "README.md")
